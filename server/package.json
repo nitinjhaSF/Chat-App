@@ -1,0 +1,11 @@
+{
+  "name": "root",
+  "private": true,
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "lerna": "^6.6.2"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0"
+  }
+}

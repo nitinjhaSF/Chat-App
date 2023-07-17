@@ -1,0 +1,358 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "chat",
+    "version": "1.0.0",
+    "description": "chat",
+    "contact": {
+      "name": "Nitin",
+      "email": "nitin.jha@sourcefuse.com"
+    }
+  },
+  "paths": {
+    "/messages/{messageId}/markAsRead": {
+      "patch": {
+        "x-controller-name": "SocketMessageController",
+        "x-operation-name": "patchMessageRecipients",
+        "tags": [
+          "SocketMessageController"
+        ],
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "responses": {},
+        "description": "\n\n| Permissions |\n| ------- |\n| UpdateMessageRecipient   |\n",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "messageId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "operationId": "SocketMessageController.patchMessageRecipients"
+      }
+    },
+    "/messages": {
+      "post": {
+        "x-controller-name": "SocketMessageController",
+        "x-operation-name": "createMessage",
+        "tags": [
+          "SocketMessageController"
+        ],
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message Modal instance",
+            "content": {
+              "application/json": {
+                "$ref": "#/components/schemas/SocketMessage",
+                "definitions": {
+                  "SocketMessage": {
+                    "$ref": "#/components/schemas/SocketMessage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "\n\n| Permissions |\n| ------- |\n| CreateMessage   |\n",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Message"
+              }
+            }
+          },
+          "x-parameter-index": 1
+        },
+        "operationId": "SocketMessageController.createMessage"
+      },
+      "get": {
+        "x-controller-name": "SocketMessageController",
+        "x-operation-name": "find",
+        "tags": [
+          "SocketMessageController"
+        ],
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of Message model instances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SocketMessageWithRelations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "\n\n| Permissions |\n| ------- |\n| ViewMessage   |\n",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "channelId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "SocketMessageController.find"
+      }
+    },
+    "/ping": {
+      "get": {
+        "x-controller-name": "PingController",
+        "x-operation-name": "ping",
+        "tags": [
+          "PingController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ping Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PingResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "operationId": "PingController.ping"
+      }
+    },
+    "/userTenantId": {
+      "get": {
+        "x-controller-name": "SocketMessageController",
+        "x-operation-name": "getUserTenantId",
+        "tags": [
+          "SocketMessageController"
+        ],
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "To get the userTenantId",
+            "content": {
+              "text/plain": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "description": "",
+        "operationId": "SocketMessageController.getUserTenantId"
+      }
+    },
+    "/": {
+      "get": {
+        "x-controller-name": "HomePageController",
+        "x-operation-name": "homePage",
+        "tags": [
+          "HomePageController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Home Page",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "operationId": "HomePageController.homePage"
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "SocketMessageWithRelations": {
+        "title": "SocketMessageWithRelations",
+        "type": "object",
+        "description": "(tsType: SocketMessageWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "toUserId": {
+            "type": "string"
+          },
+          "channelId": {
+            "type": "string"
+          },
+          "channelType": {
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "body",
+          "toUserId",
+          "channelId",
+          "channelType"
+        ],
+        "additionalProperties": true,
+        "x-typescript-type": "SocketMessageWithRelations"
+      },
+      "Message": {
+        "title": "Message",
+        "type": "object",
+        "description": "(tsType: Omit<SocketMessage, 'id'>, schemaOptions: { title: 'Message', exclude: [ 'id' ] })",
+        "properties": {
+          "subject": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "toUserId": {
+            "type": "string"
+          },
+          "channelId": {
+            "type": "string"
+          },
+          "channelType": {
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "body",
+          "toUserId",
+          "channelId",
+          "channelType"
+        ],
+        "additionalProperties": true,
+        "x-typescript-type": "Omit<SocketMessage, 'id'>"
+      },
+      "SocketMessage": {
+        "title": "SocketMessage",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "toUserId": {
+            "type": "string"
+          },
+          "channelId": {
+            "type": "string"
+          },
+          "channelType": {
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "body",
+          "toUserId",
+          "channelId",
+          "channelType"
+        ],
+        "additionalProperties": true
+      },
+      "PingResponse": {
+        "type": "object",
+        "title": "PingResponse",
+        "properties": {
+          "greeting": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "headers": {
+            "type": "object",
+            "properties": {
+              "Content-Type": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
+}
